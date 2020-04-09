@@ -271,21 +271,21 @@ func TestVariableArrivalRateCal(t *testing.T) {
 
 func BenchmarkCal(b *testing.B) {
 	for _, t := range []time.Duration{
-		time.Second, time.Minute,
+		time.Second, time.Minute, 5 * time.Minute,
 	} {
 		t := t
 		b.Run(t.String(), func(b *testing.B) {
 			var config = VariableArrivalRateConfig{
 				TimeUnit:  types.NullDurationFrom(time.Second),
-				StartRate: null.IntFrom(50),
+				StartRate: null.IntFrom(0),
 				Stages: []Stage{
 					{
 						Duration: types.NullDurationFrom(t),
-						Target:   null.IntFrom(49),
+						Target:   null.IntFrom(500),
 					},
 					{
 						Duration: types.NullDurationFrom(t),
-						Target:   null.IntFrom(50),
+						Target:   null.IntFrom(500),
 					},
 				},
 			}
