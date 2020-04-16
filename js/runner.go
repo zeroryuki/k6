@@ -197,7 +197,7 @@ func (r *Runner) newVU(id int64, samplesOut chan<- stats.SampleContainer) (*VU, 
 		Console:        r.console,
 		BPool:          bpool.NewBufferPool(100),
 		Samples:        samplesOut,
-		RunMutex:       &sync.Mutex{},
+		runMutex:       &sync.Mutex{},
 	}
 	vu.Runtime.Set("__VU", vu.ID)
 	vu.Runtime.Set("console", common.Bind(vu.Runtime, vu.Console, vu.Context))
@@ -362,7 +362,7 @@ type VU struct {
 	TLSConfig *tls.Config
 	ID        int64
 	Iteration int64
-	RunMutex  *sync.Mutex
+	runMutex  *sync.Mutex
 
 	Console *console
 	BPool   *bpool.BufferPool
@@ -400,8 +400,8 @@ func (u *VU) Activate(params *lib.VUActivationParams) lib.ActiveVU {
 
 // RunOnce runs the default function once.
 func (u *ActiveVU) RunOnce() error {
-	u.RunMutex.Lock()
-	defer u.RunMutex.Unlock()
+	u.runMutex.Lock()
+	defer u.runMutex.Unlock()
 
 	// Unmarshall the setupData only the first time for each VU so that VUs are isolated but we
 	// still don't use too much CPU in the middle test
