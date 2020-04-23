@@ -223,6 +223,15 @@ func (car ConstantArrivalRate) Run(ctx context.Context, out chan<- stats.SampleC
 	startTime, maxDurationCtx, regDurationCtx, cancel := getDurationContexts(ctx, duration, gracefulStop)
 	defer cancel()
 
+	// Make sure all VUs aren't executing iterations anymore, for the cancel()
+	// above to deactivate them.
+	defer func() {
+		// activeVUsCount is modified only in the loop below, which is done here
+		for i := uint64(0); i < activeVUsCount; i++ {
+			<-activeVUs
+		}
+	}()
+
 	activateVU := func(initVU lib.InitializedVU) lib.ActiveVU {
 		activeVUsWg.Add(1)
 		activeVU := initVU.Activate(&lib.VUActivationParams{
