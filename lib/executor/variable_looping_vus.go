@@ -53,7 +53,7 @@ func init() {
 type Stage struct {
 	Duration types.NullDuration `json:"duration"`
 	Target   null.Int           `json:"target"` // TODO: maybe rename this to endVUs? something else?
-	//TODO: add a progression function?
+	// TODO: add a progression function?
 }
 
 // VariableLoopingVUsConfig stores the configuration for the stages executor
@@ -184,15 +184,17 @@ func (vlvc VariableLoopingVUsConfig) Validate() []error {
 //nolint:funlen
 func (vlvc VariableLoopingVUsConfig) getRawExecutionSteps(et *lib.ExecutionTuple, zeroEnd bool) []lib.ExecutionStep {
 	var (
-		timeTillEnd         time.Duration
-		fromVUs             = vlvc.StartVUs.Int64
-		start, offsets, lcd = et.GetStripedOffsets(et.ES)
-		index               = segmentedIndex{start: start, lcd: lcd, offsets: offsets}
+		timeFromStart time.Duration
+		fromVUs       = vlvc.StartVUs.Int64
 	)
-	index.goTo(fromVUs)
-	var steps = make([]lib.ExecutionStep, 0, vlvc.precalculateTheRequiredSteps(et, zeroEnd))
+
+	expSteps := vlvc.precalculateTheRequiredSteps(et, zeroEnd) // TODO: do we need to?
+	steps := make([]lib.ExecutionStep, 0, expSteps)
+
+	iter := newSegmentedIterator(et, 1) // VU counts start from 1
+	iter.goTo(fromVUs)
 	// Reserve the scaled StartVUs at the beginning
-	steps = append(steps, lib.ExecutionStep{TimeOffset: 0, PlannedVUs: uint64(index.local)})
+	steps = append(steps, lib.ExecutionStep{TimeOffset: 0, PlannedVUs: uint64(iter.scaled)})
 	addStep := func(step lib.ExecutionStep) {
 		if steps[len(steps)-1].PlannedVUs != step.PlannedVUs {
 			steps = append(steps, step)
@@ -202,100 +204,114 @@ func (vlvc VariableLoopingVUsConfig) getRawExecutionSteps(et *lib.ExecutionTuple
 	for _, stage := range vlvc.Stages {
 		stageEndVUs := stage.Target.Int64
 		stageDuration := time.Duration(stage.Duration.Duration)
-		timeTillEnd += stageDuration
 
 		stageVUDiff := stageEndVUs - fromVUs
 		if stageVUDiff == 0 {
+			timeFromStart += stageDuration
 			continue
 		}
 		if stageDuration == 0 {
-			index.goTo(stageEndVUs)
-			addStep(lib.ExecutionStep{TimeOffset: timeTillEnd, PlannedVUs: uint64(index.local)})
+			iter.goTo(stageEndVUs)
+			addStep(lib.ExecutionStep{TimeOffset: timeFromStart, PlannedVUs: uint64(iter.scaled)})
 			fromVUs = stageEndVUs
 			continue
 		}
 
-		if index.global > stageEndVUs { // ramp down
-			// here we don't want to emit for the equal to stageEndVUs as it doesn't go below it
-			// it will just go to it
-			for ; index.global > stageEndVUs; index.prev() {
-				if index.global > fromVUs {
-					continue
-				}
-				// VU reservation for gracefully ramping down is handled as a
-				// separate method: reserveVUsForGracefulRampDowns()
-				addStep(lib.ExecutionStep{
-					TimeOffset: timeTillEnd - time.Duration(int64(stageDuration)*(stageEndVUs-index.global)/stageVUDiff),
-					PlannedVUs: uint64(index.local - 1),
-				})
+		iter.stepUntil(stageEndVUs, func(scaled, unscaled int64) {
+			if unscaled < 0 {
+				unscaled = 0
 			}
-		} else {
-			// here we want the emit for the last one as this case it actually should emit that
-			// we start it
-			for ; index.global <= stageEndVUs; index.next() {
-				if index.global < fromVUs {
-					continue
-				}
-				// VU reservation for gracefully ramping down is handled as a
-				// separate method: reserveVUsForGracefulRampDowns()
-				addStep(lib.ExecutionStep{
-					TimeOffset: timeTillEnd - time.Duration(int64(stageDuration)*(stageEndVUs-index.global)/stageVUDiff),
-					PlannedVUs: uint64(index.local),
-				})
-			}
-		}
+
+			addStep(lib.ExecutionStep{
+				TimeOffset: timeFromStart + time.Duration((unscaled-fromVUs)*int64(stageDuration)/stageVUDiff),
+				PlannedVUs: uint64(scaled),
+			})
+		})
+		timeFromStart += stageDuration
 		fromVUs = stageEndVUs
 	}
 
 	if zeroEnd && steps[len(steps)-1].PlannedVUs != 0 {
 		// If the last PlannedVUs value wasn't 0, add a last step with 0
-		steps = append(steps, lib.ExecutionStep{TimeOffset: timeTillEnd, PlannedVUs: 0})
+		steps = append(steps, lib.ExecutionStep{TimeOffset: timeFromStart, PlannedVUs: 0})
 	}
+
 	return steps
 }
 
-type segmentedIndex struct { // TODO: rename ... although this is probably the best name so far :D
-	start, lcd    int64
-	offsets       []int64
-	local, global int64
+// segmentIterator allows you to gradually increment and decrement a value,
+// following only the "allowed" stripes by the particular ExecutionTuple
+//
+// TODO: move this out of here and make it public? maybe as a part of
+// https://github.com/loadimpact/k6/issues/1379 ? this will be used in data
+// partitioning, after all
+type segmentIterator struct {
+	lcd, unscaledStart int64
+	offsets            []int64
+	scaled, unscaled   int64
 }
 
-func (s *segmentedIndex) next() {
-	if s.local == 0 {
-		s.global += s.start + 1
-	} else {
-		s.global += s.offsets[int(s.local-1)%len(s.offsets)]
+func newSegmentedIterator(et *lib.ExecutionTuple, initialOffset int64) *segmentIterator {
+	start, offsets, lcd := et.GetStripedOffsets(et.ES)
+	unscaledStart := start + initialOffset - offsets[0] // This can (and will likely be) negative
+
+	return &segmentIterator{
+		scaled:        0,
+		unscaled:      unscaledStart,
+		unscaledStart: unscaledStart,
+		lcd:           lcd,
+		offsets:       offsets,
 	}
-	s.local++
 }
 
-func (s *segmentedIndex) prev() {
-	if s.local == 1 {
-		s.global -= s.start + 1
-	} else {
-		s.global -= s.offsets[int(s.local-2)%len(s.offsets)]
+// stepUntil will move the internal cursors until the unscaled value reaches the
+// closest it can to newUnscaledValue, but it will never pass it.
+func (s *segmentIterator) stepUntil(newUnscaledValue int64, callback func(scaled, unscaled int64)) {
+	offsetsLen := int64(len(s.offsets))
+	if newUnscaledValue > s.unscaled {
+		for stepForward := s.offsets[s.scaled%offsetsLen]; s.unscaled+stepForward <= newUnscaledValue; {
+			s.scaled++
+			s.unscaled += stepForward
+			if callback != nil {
+				callback(s.scaled, s.unscaled)
+			}
+			stepForward = s.offsets[s.scaled%offsetsLen]
+		}
+	} else if newUnscaledValue < s.unscaled {
+		// s.scaled is at leaast 1, since for it to be 0, s.unscaled would be
+		// negative or 0, and we can't get a newUnscaledValue less than that
+		// (unless we have a huge bug somewhere else), so we wont be here
+		for stepBack := s.offsets[(s.scaled-1)%offsetsLen]; s.unscaled-stepBack >= newUnscaledValue; {
+			s.scaled--
+			s.unscaled -= stepBack
+			if callback != nil {
+				callback(s.scaled, s.unscaled)
+			}
+			if s.scaled == 0 {
+				break
+			}
+			stepBack = s.offsets[(s.scaled-1)%offsetsLen]
+		}
 	}
-	s.local--
 }
 
-func (s *segmentedIndex) goTo(value int64) { // TODO optimize
-	var gi int64
-	s.local = (value / s.lcd) * int64(len(s.offsets))
-	s.global = s.local / int64(len(s.offsets)) * s.lcd // TODO optimize ?
-	i := s.start
-	for ; i < value%s.lcd; gi, i = gi+1, i+s.offsets[gi] {
-		s.local++
-	}
+// goTo quickly jumps to the desrired value, by "jumping" over any amount of
+// cyclic repetitions of the striped pattern, and only going step by step
+// through the final incomplete cycle.
 
-	if gi > 0 {
-		s.global += i - s.offsets[gi-1]
-	} else if s.local > 0 {
-		s.global -= s.offsets[len(s.offsets)-1] - s.start
-	}
-
-	if s.local > 0 {
-		s.global++ // this is to fix the fact it starts from 0
-	}
+// TODO: actually use this in the ExecutionTuple.ScaleInt64() method?
+func (s *segmentIterator) goTo(newUnscaledValue int64) {
+	// Because of the cyclical nature of the striping algorithm (with a cycle
+	// length of LCD, the least common denominator), when scaling large values
+	// (i.e. many multiples of the LCD), we can quickly calculate how many times
+	// the cycle repeats.
+	wholeCycles := (newUnscaledValue / s.lcd)
+	// So we can set some approximate initial values quickly, since we also know
+	// precisely how many scaled values there are per cycle length.
+	s.scaled = wholeCycles * int64(len(s.offsets))
+	s.unscaled = s.unscaledStart + wholeCycles*s.lcd
+	// Approach the final value using the slow algorithm with the step by step loop
+	s.stepUntil(newUnscaledValue, nil)
 }
 
 func absInt64(a int64) int64 {
@@ -542,7 +558,8 @@ func (vlv VariableLoopingVUs) Run(ctx context.Context, out chan<- stats.SampleCo
 	// Make sure the log and the progress bar have accurate information
 	vlv.logger.WithFields(logrus.Fields{
 		"type": vlv.config.GetType(), "startVUs": vlv.config.GetStartVUs(vlv.executionState.ExecutionTuple), "maxVUs": maxVUs,
-		"duration": regularDuration, "numStages": len(vlv.config.Stages)},
+		"duration": regularDuration, "numStages": len(vlv.config.Stages),
+	},
 	).Debug("Starting executor run...")
 
 	activeVUsCount := new(int64)
