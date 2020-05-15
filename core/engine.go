@@ -123,7 +123,7 @@ func (e *Engine) Init(globalCtx, runCtx context.Context) (run func() error, wait
 	e.logger.Debug("Initialization starting...")
 	// TODO: if we ever need metrics processing in the init context, we can move
 	// this below the other components... or even start them concurrently?
-	if err := e.ExecutionScheduler.Init(runCtx, e.Samples); err != nil {
+	if err = e.ExecutionScheduler.Init(runCtx, e.Samples); err != nil {
 		return nil, nil, err
 	}
 
@@ -134,17 +134,17 @@ func (e *Engine) Init(globalCtx, runCtx context.Context) (run func() error, wait
 	resultCh := make(chan error)
 	runFn := func() error {
 		e.logger.Debug("Execution scheduler starting...")
-		err := e.ExecutionScheduler.Run(globalCtx, runSubCtx, e.Samples)
+		runerr := e.ExecutionScheduler.Run(globalCtx, runSubCtx, e.Samples)
 		e.logger.WithError(err).Debug("Execution scheduler terminated")
 
 		select {
 		case <-runSubCtx.Done():
 			// do nothing, the test run was aborted somehow
 		default:
-			resultCh <- err // we finished normally, so send the result
+			resultCh <- runerr // we finished normally, so send the result
 		}
 
-		return err
+		return runerr
 	}
 	waitFn, err := e.startBackgroundProcesses(globalCtx, runCtx, resultCh, runSubCancel)
 	if err != nil {
@@ -162,10 +162,11 @@ func (e *Engine) startBackgroundProcesses( //nolint:funlen
 ) (wait func(), err error) {
 	processes := new(sync.WaitGroup)
 	metricsCtx, metricsDone := context.WithCancel(context.Background())
+	defer metricsDone()
 
 	// Spin up all configured collectors
 	for _, collector := range e.Collectors {
-		if err := collector.Init(); err != nil {
+		if err = collector.Init(); err != nil {
 			return nil, err
 		}
 		processes.Add(1)
