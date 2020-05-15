@@ -207,14 +207,11 @@ a commandline interface for interacting with it.`,
 		}
 
 		// Create a collector and assign it to the engine if requested.
-		initBar.Modify(pb.WithConstProgress(0, "Init metric outputs"))
+		initBar.Modify(pb.WithConstProgress(0, "Create metric outputs"))
 		for _, out := range conf.Out {
 			t, arg := parseCollector(out)
 			collector, cerr := newCollector(t, arg, src, conf, execScheduler.GetExecutionPlan())
 			if cerr != nil {
-				return cerr
-			}
-			if cerr = collector.Init(); cerr != nil {
 				return cerr
 			}
 			engine.Collectors = append(engine.Collectors, collector)

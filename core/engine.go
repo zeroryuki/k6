@@ -146,7 +146,10 @@ func (e *Engine) Init(globalCtx, runCtx context.Context) (run func() error, wait
 
 		return err
 	}
-	waitFn := e.startBackgroundProcesses(globalCtx, runCtx, resultCh, runSubCancel)
+	waitFn, err := e.startBackgroundProcesses(globalCtx, runCtx, resultCh, runSubCancel)
+	if err != nil {
+		return nil, nil, err
+	}
 	return runFn, waitFn, nil
 }
 
@@ -156,12 +159,15 @@ func (e *Engine) Init(globalCtx, runCtx context.Context) (run func() error, wait
 // started goroutines.
 func (e *Engine) startBackgroundProcesses( //nolint:funlen
 	globalCtx, runCtx context.Context, runResult <-chan error, runSubCancel func(),
-) (wait func()) {
+) (wait func(), err error) {
 	processes := new(sync.WaitGroup)
 	metricsCtx, metricsDone := context.WithCancel(context.Background())
 
 	// Spin up all configured collectors
 	for _, collector := range e.Collectors {
+		if err := collector.Init(); err != nil {
+			return nil, err
+		}
 		processes.Add(1)
 		go func(collector lib.Collector) {
 			collector.Run(metricsCtx)
@@ -240,7 +246,7 @@ func (e *Engine) startBackgroundProcesses( //nolint:funlen
 		}()
 	}
 
-	return processes.Wait
+	return processes.Wait, nil
 }
 
 func (e *Engine) processMetrics(ctx context.Context) {
