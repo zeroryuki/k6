@@ -623,6 +623,17 @@ func (essw *ExecutionSegmentSequenceWrapper) GetStripedOffsets(segmentIndex int)
 	return jumps[0], offsets, essw.lcd
 }
 
+// GetStripedJumps returns the stripped jumps for the given segment
+// the returned values are as follows in order:
+// - jumps: a list of jumps from the beginning value for the segment. This are only the jumps
+//            to from the start to the next start if we chunk the elements we are going to strip
+//            into lcd sized chunks
+// - lcd: the LCD of the lengths of all segments in the sequence. This is also the number of
+//        elements after which the algorithm starts to loop and give the same values
+func (essw *ExecutionSegmentSequenceWrapper) GetStripedJumps(segmentIndex int) ([]int64, int64) {
+	return essw.jumps[segmentIndex], essw.lcd
+}
+
 // GetTuple returns an ExecutionTuple for the specified segment index.
 func (essw *ExecutionSegmentSequenceWrapper) GetTuple(segmentIndex int) *ExecutionTuple {
 	return &ExecutionTuple{
@@ -721,6 +732,11 @@ func (et *ExecutionTuple) ScaleInt64(value int64) int64 {
 // GetStripedOffsets returns the striped offsets for our execution segment.
 func (et *ExecutionTuple) GetStripedOffsets() (int64, []int64, int64) {
 	return et.Sequence.GetStripedOffsets(et.SegmentIndex)
+}
+
+// GetStripedJumps returns the striped jumps for our execution segment.
+func (et *ExecutionTuple) GetStripedJumps() ([]int64, int64) {
+	return et.Sequence.GetStripedJumps(et.SegmentIndex)
 }
 
 // GetNewExecutionTupleFromValue re-segments the sequence, based on the given
