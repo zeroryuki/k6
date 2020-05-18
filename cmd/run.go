@@ -278,6 +278,11 @@ a commandline interface for interacting with it.`,
 			runCancel() // stop the test run, metric processing is cancelled below
 			lingerCancel()
 
+			for _, c := range engine.Collectors {
+				c.SetRunStatus(lib.RunStatusAbortedUser)
+				c.Cleanup()
+			}
+
 			// If we get a second signal, we immediately exit, so something like
 			// https://github.com/loadimpact/k6/issues/971 never happens again
 			sig = <-sigC

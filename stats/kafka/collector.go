@@ -60,6 +60,9 @@ func New(conf Config) (*Collector, error) {
 // Init does nothing, it's only included to satisfy the lib.Collector interface
 func (c *Collector) Init() error { return nil }
 
+// Cleanup does nothing, it's only included to satisfy the lib.Collector interface
+func (c *Collector) Cleanup() {}
+
 // Run just blocks until the context is done
 func (c *Collector) Run(ctx context.Context) {
 	logrus.Debug("Kafka: Running!")

@@ -31,10 +31,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/stats"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/afero"
+
+	"github.com/loadimpact/k6/lib"
+	"github.com/loadimpact/k6/stats"
 )
 
 // Collector saving output to csv implements the lib.Collector interface
@@ -117,6 +118,9 @@ func (c *Collector) Init() error {
 	c.csvWriter.Flush()
 	return nil
 }
+
+// Cleanup does nothing, it's only included to satisfy the lib.Collector interface
+func (c *Collector) Cleanup() {}
 
 // SetRunStatus does nothing
 func (c *Collector) SetRunStatus(status lib.RunStatus) {}

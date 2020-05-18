@@ -91,9 +91,11 @@ func New(fs afero.Fs, fname string) (*Collector, error) {
 	return c, nil
 }
 
-func (c *Collector) Init() error {
-	return nil
-}
+// Init does nothing, it's only included to satisfy the lib.Collector interface
+func (c *Collector) Init() error { return nil }
+
+// Cleanup does nothing, it's only included to satisfy the lib.Collector interface
+func (c *Collector) Cleanup() {}
 
 func (c *Collector) SetRunStatus(status lib.RunStatus) {}
 

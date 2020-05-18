@@ -200,6 +200,11 @@ func (c *Collector) Link() string {
 	return URLForResults(c.referenceID, c.config)
 }
 
+// Cleanup updates the test status in the backend
+func (c *Collector) Cleanup() {
+	c.testFinished()
+}
+
 // Run is called in a goroutine and starts the collector. Should commit samples to the backend
 // at regular intervals and when the context is terminated.
 func (c *Collector) Run(ctx context.Context) {

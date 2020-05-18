@@ -53,6 +53,10 @@ type Collector interface {
 	// You should do any lengthy setup here rather than in New.
 	Init() error
 
+	// Cleanup is run on premature engine interruption (e.g. Ctrl+C).
+	// It can be used to perform optional maintenance.
+	Cleanup()
+
 	// Run is called in a goroutine and starts the collector. Should commit samples to the backend
 	// at regular intervals and when the context is terminated.
 	Run(ctx context.Context)

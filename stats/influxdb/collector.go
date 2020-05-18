@@ -27,9 +27,10 @@ import (
 	"time"
 
 	client "github.com/influxdata/influxdb1-client/v2"
+	"github.com/sirupsen/logrus"
+
 	"github.com/loadimpact/k6/lib"
 	"github.com/loadimpact/k6/stats"
-	"github.com/sirupsen/logrus"
 )
 
 // Verify that Collector implements lib.Collector
@@ -73,6 +74,9 @@ func (c *Collector) Init() error {
 
 	return nil
 }
+
+// Cleanup does nothing, it's only included to satisfy the lib.Collector interface
+func (c *Collector) Cleanup() {}
 
 func (c *Collector) Run(ctx context.Context) {
 	logrus.Debug("InfluxDB: Running!")

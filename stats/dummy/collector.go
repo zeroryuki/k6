@@ -43,6 +43,9 @@ var _ lib.Collector = &Collector{}
 // Init does nothing, it's only included to satisfy the lib.Collector interface
 func (c *Collector) Init() error { return nil }
 
+// Cleanup does nothing, it's only included to satisfy the lib.Collector interface
+func (c *Collector) Cleanup() {}
+
 // MakeConfig does nothing, it's only included to satisfy the lib.Collector interface
 func (c *Collector) MakeConfig() interface{} { return nil }
 

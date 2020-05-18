@@ -82,6 +82,9 @@ func (c *Collector) Link() string {
 	return c.Config.Addr.String
 }
 
+// Cleanup does nothing, it's only included to satisfy the lib.Collector interface
+func (c *Collector) Cleanup() {}
+
 // Run the collector
 func (c *Collector) Run(ctx context.Context) {
 	c.logger.Debugf("%s: Running!", c.Type)
