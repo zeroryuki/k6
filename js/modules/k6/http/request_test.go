@@ -40,12 +40,6 @@ import (
 	"github.com/andybalholm/brotli"
 	"github.com/dop251/goja"
 	"github.com/klauspost/compress/zstd"
-	"github.com/loadimpact/k6/js/common"
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/metrics"
-	"github.com/loadimpact/k6/lib/testutils"
-	"github.com/loadimpact/k6/lib/testutils/httpmultibin"
-	"github.com/loadimpact/k6/stats"
 	"github.com/mccutchen/go-httpbin/httpbin"
 	"github.com/oxtoacart/bpool"
 	"github.com/sirupsen/logrus"
@@ -53,6 +47,13 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	null "gopkg.in/guregu/null.v3"
+
+	"github.com/loadimpact/k6/js/common"
+	"github.com/loadimpact/k6/lib"
+	"github.com/loadimpact/k6/lib/metrics"
+	"github.com/loadimpact/k6/lib/testutils"
+	"github.com/loadimpact/k6/lib/testutils/httpmultibin"
+	"github.com/loadimpact/k6/stats"
 )
 
 func assertRequestMetricsEmitted(t *testing.T, sampleContainers []stats.SampleContainer, method, url, name string, status int, group string) {
@@ -891,6 +892,22 @@ func TestRequestAndBatch(t *testing.T) {
 				`))
 				assert.NoError(t, err)
 				assertRequestMetricsEmitted(t, stats.GetBufferedSamples(samples), "GET", sr("HTTPBIN_URL/headers"), "", 200, "")
+			})
+
+			t.Run("headers-keep-case", func(t *testing.T) {
+				tb.Mux.HandleFunc("/headers-case-sensitive", func(w http.ResponseWriter, r *http.Request) {
+					// r.Header already has headers transformed by CanonicalMIMEHeaderKey,
+					// e.g. "custom-CASE-header" is "Custom-Case-Header" here.
+				})
+				_, err := common.RunString(rt, sr(`
+				let res = http.request("GET", "HTTPBIN_URL/headers-case-sensitive", null, {
+					headers: { "custom-CASE-header": "value" },
+				});
+				if (res.status != 200) { throw new Error("wrong status: " + res.status); }
+				if (res.json().headers["custom-CASE-header"] != "value") { throw new Error("wrong custom-CASE-header: " + res.json().headers["custom-CASE-header"]); }
+				`))
+				assert.NoError(t, err)
+				assertRequestMetricsEmitted(t, stats.GetBufferedSamples(samples), "GET", sr("HTTPBIN_URL/headers-case-sensitive"), "", 200, "")
 			})
 		})
 

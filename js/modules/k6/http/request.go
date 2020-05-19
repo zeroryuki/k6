@@ -33,10 +33,11 @@ import (
 	"time"
 
 	"github.com/dop251/goja"
+	null "gopkg.in/guregu/null.v3"
+
 	"github.com/loadimpact/k6/js/common"
 	"github.com/loadimpact/k6/lib"
 	"github.com/loadimpact/k6/lib/netext/httpext"
-	null "gopkg.in/guregu/null.v3"
 )
 
 // ErrHTTPForbiddenInInitContext is used when a http requests was made in the init context
@@ -291,7 +292,8 @@ func (h *HTTP) parseRequest(
 					case "host":
 						result.Req.Host = str
 					default:
-						result.Req.Header.Set(key, str)
+						// Not using Set or Add to keep original case (see #1246)
+						result.Req.Header[key] = []string{str}
 					}
 				}
 			case "jar":
