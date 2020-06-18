@@ -69,6 +69,14 @@
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:33c927e62a50f15d903c716ed24f3416e6415d6f5c23852a4f2e75ef92510211"
+  name = "github.com/crewjam/rfc5424"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "e1f43517bf3e343a50a4c1d9605cd8d4b6f7be1f"
+  version = "v0.1.0"
+
+[[projects]]
   branch = "master"
   digest = "1:8a49786ec8f770dc1fdc251970f86e1f12b4938cf52b261ffa6f66158670c8c7"
   name = "github.com/daaku/go.zipexe"
@@ -684,6 +692,7 @@
     "github.com/Shopify/sarama",
     "github.com/Soontao/goHttpDigestClient",
     "github.com/andybalholm/brotli",
+    "github.com/crewjam/rfc5424",
     "github.com/dop251/goja",
     "github.com/dop251/goja/parser",
     "github.com/dustin/go-humanize",

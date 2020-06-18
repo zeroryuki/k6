@@ -23,9 +23,11 @@ package cmd
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 
 	"github.com/fatih/color"
@@ -58,13 +60,15 @@ var defaultConfigFilePath = defaultConfigFileName // Updated with the user's con
 //nolint:gochecknoglobals
 var configFilePath = os.Getenv("K6_CONFIG") // Overridden by `-c`/`--config` flag!
 
+//nolint:gochecknoglobals
 var (
 	//TODO: have environment variables for configuring these? hopefully after we move away from global vars though...
-	verbose bool
-	quiet   bool
-	noColor bool
-	logFmt  string
-	address string
+	verbose   bool
+	quiet     bool
+	noColor   bool
+	logOutput string
+	logFmt    string
+	address   string
 )
 
 // RootCmd represents the base command when called without any subcommands.
@@ -74,8 +78,13 @@ var RootCmd = &cobra.Command{
 	Long:          BannerColor.Sprintf("\n%s", consts.Banner),
 	SilenceUsage:  true,
 	SilenceErrors: true,
-	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		setupLoggers(logFmt)
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		var logger = logrus.StandardLogger() // don't use the global one to begin with
+		err := setupLoggers(logger, logFmt, logOutput)
+		if err != nil {
+			return err
+		}
+
 		if noColor {
 			// TODO: figure out something else... currently, with the wrappers
 			// below, we're stripping any colors from the output after we've
@@ -92,8 +101,9 @@ var RootCmd = &cobra.Command{
 			stdout.Writer = colorable.NewNonColorable(os.Stdout)
 			stderr.Writer = colorable.NewNonColorable(os.Stderr)
 		}
-		log.SetOutput(logrus.StandardLogger().Writer())
-		logrus.Debugf("k6 version: v%s", consts.FullVersion())
+		log.SetOutput(logger.Writer())
+		logger.Debugf("k6 version: v%s", consts.FullVersion())
+		return nil
 	},
 }
 
@@ -120,6 +130,8 @@ func rootCmdPersistentFlagSet() *pflag.FlagSet {
 	flags.BoolVarP(&verbose, "verbose", "v", false, "enable debug logging")
 	flags.BoolVarP(&quiet, "quiet", "q", false, "disable progress updates")
 	flags.BoolVar(&noColor, "no-color", false, "disable colored output")
+	flags.StringVar(&logOutput, "log-output", "stderr",
+		"change output to which logs go, possible values are stderr,stdout,none,syslog[=host:port]")
 	flags.StringVar(&logFmt, "logformat", "", "log output format")
 	flags.StringVarP(&address, "address", "a", "localhost:6565", "address for the api server")
 
@@ -157,7 +169,7 @@ func fprintf(w io.Writer, format string, a ...interface{}) (n int) {
 	return n
 }
 
-// RawFormatter it does nothing with the message just prints it
+// RawFormater it does nothing with the message just prints it
 type RawFormater struct{}
 
 // Format renders a single log entry
@@ -165,22 +177,50 @@ func (f RawFormater) Format(entry *logrus.Entry) ([]byte, error) {
 	return append([]byte(entry.Message), '\n'), nil
 }
 
-func setupLoggers(logFmt string) {
+func setupLoggers(logger *logrus.Logger, logFmt string, logOutput string) error {
 	if verbose {
-		logrus.SetLevel(logrus.DebugLevel)
+		logger.SetLevel(logrus.DebugLevel)
 	}
-	logrus.SetOutput(stderr)
+	switch logOutput {
+	case "stderr":
+		logger.SetOutput(stderr)
+	case "stdout":
+		logger.SetOutput(stdout)
+	case "none":
+		logger.SetOutput(ioutil.Discard)
+	default:
+		if !strings.HasPrefix(logOutput, "syslog") {
+			return fmt.Errorf("unsupported log output `%s`", logOutput)
+		}
+		var protocol = "tcp"
+		var addr = "localhost:514"
+		if logOutput != "syslog" {
+			parts := strings.SplitN(logOutput, "=", 2)
+			if parts[0] != "syslog" {
+				return fmt.Errorf("syslog  configuration should be in the form `syslog=host:port` but is `%s`", logOutput)
+			}
+			addr = parts[1]
+		}
+
+		hook, err := newSyslogHook(protocol, addr)
+		if err != nil {
+			return err
+		}
+		logger.AddHook(hook)
+		logger.SetOutput(ioutil.Discard)
+		noColor = true
+	}
 
 	switch logFmt {
 	case "raw":
-		logrus.SetFormatter(&RawFormater{})
-		logrus.Debug("Logger format: RAW")
+		logger.SetFormatter(&RawFormater{})
+		logger.Debug("Logger format: RAW")
 	case "json":
-		logrus.SetFormatter(&logrus.JSONFormatter{})
-		logrus.Debug("Logger format: JSON")
+		logger.SetFormatter(&logrus.JSONFormatter{})
+		logger.Debug("Logger format: JSON")
 	default:
-		logrus.SetFormatter(&logrus.TextFormatter{ForceColors: stderrTTY, DisableColors: noColor})
-		logrus.Debug("Logger format: TEXT")
+		logger.SetFormatter(&logrus.TextFormatter{ForceColors: stderrTTY, DisableColors: noColor})
+		logger.Debug("Logger format: TEXT")
 	}
-
+	return nil
 }
