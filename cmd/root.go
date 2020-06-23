@@ -194,21 +194,30 @@ func setupLoggers(logger *logrus.Logger, logFmt string, logOutput string) error 
 		}
 		var protocol = "tcp"
 		var addr = "localhost:514"
+		var additionalParams [][2]string
 		if logOutput != "syslog" {
 			parts := strings.SplitN(logOutput, "=", 2)
 			if parts[0] != "syslog" {
 				return fmt.Errorf("syslog  configuration should be in the form `syslog=host:port` but is `%s`", logOutput)
 			}
-			addr = parts[1]
+			args := strings.Split(parts[1], ",")
+			addr = args[0]
+			if len(args) > 1 {
+				additionalParams = make([][2]string, len(args)-1)
+				for i, arg := range args[1:] {
+					paramParts := strings.SplitN(arg, "=", 2)
+					additionalParams[i] = [2]string{paramParts[0], paramParts[1]}
+				}
+			}
 		}
 
-		hook, err := newSyslogHook(protocol, addr)
+		hook, err := newSyslogHook(protocol, addr, additionalParams)
 		if err != nil {
 			return err
 		}
 		logger.AddHook(hook)
-		logger.SetOutput(ioutil.Discard)
-		noColor = true
+		logger.SetOutput(ioutil.Discard) // don't output to anywhere else
+		noColor = true                   // disable color
 	}
 
 	switch logFmt {
