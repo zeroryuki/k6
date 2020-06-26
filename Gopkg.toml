@@ -36,6 +36,10 @@
   name = "github.com/spf13/afero"
 
 [[constraint]]
+  branch = "es6"
+  name = "github.com/dop251/goja"
+
+[[constraint]]
   branch = "master"
   name = "github.com/urfave/negroni"
 

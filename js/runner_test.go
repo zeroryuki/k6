@@ -1362,10 +1362,10 @@ func TestHTTPRequestInInitContext(t *testing.T) {
 					}
 				`))
 	if assert.Error(t, err) {
-		assert.Equal(
+		assert.Contains(
 			t,
-			"GoError: "+k6http.ErrHTTPForbiddenInInitContext.Error(),
-			err.Error())
+			err.Error(),
+			k6http.ErrHTTPForbiddenInInitContext.Error())
 	}
 }
 
@@ -1437,10 +1437,10 @@ func TestInitContextForbidden(t *testing.T) {
 		t.Run(test[0], func(t *testing.T) {
 			_, err := getSimpleRunner("/script.js", tb.Replacer.Replace(test[1]))
 			if assert.Error(t, err) {
-				assert.Equal(
+				assert.Contains(
 					t,
-					"GoError: "+test[2],
-					err.Error())
+					err.Error(),
+					test[2])
 			}
 		})
 	}

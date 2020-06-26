@@ -305,7 +305,7 @@ func (h *HTTP) parseRequest(
 					result.ActiveJar = v.jar
 				}
 			case "compression":
-				var algosString = strings.TrimSpace(params.Get(k).ToString().String())
+				var algosString = strings.TrimSpace(params.Get(k).ToPrimitiveString().String())
 				if algosString == "" {
 					continue
 				}

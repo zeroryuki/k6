@@ -68,7 +68,7 @@ func (c console) log(ctx *context.Context, level logrus.Level, msgobj goja.Value
 	for i, arg := range args {
 		fields[strconv.Itoa(i)] = arg.String()
 	}
-	msg := msgobj.ToString()
+	msg := msgobj.ToPrimitiveString()
 	e := c.Logger.WithFields(fields)
 	switch level {
 	case logrus.DebugLevel:
