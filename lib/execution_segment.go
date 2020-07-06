@@ -76,11 +76,12 @@ func NewExecutionSegment(from, to *big.Rat) (*ExecutionSegment, error) {
 	if to.Cmp(oneRat) > 0 {
 		return nil, fmt.Errorf("segment end value shouldn't be more than 1 but was %s", to.FloatString(2))
 	}
-	return newExecutionSegment(from, to), nil
+	return NewUncheckedExecutionSegment(from, to), nil
 }
 
-// newExecutionSegment just creates an ExecutionSegment without validating the arguments
-func newExecutionSegment(from, to *big.Rat) *ExecutionSegment {
+// NewUncheckedExecutionSegment creates an ExecutionSegment without validating
+// the arguments. Do not use unless absolutely sure you know what you're doing.
+func NewUncheckedExecutionSegment(from, to *big.Rat) *ExecutionSegment {
 	return &ExecutionSegment{
 		from:   from,
 		to:     to,
@@ -416,6 +417,55 @@ func (ess ExecutionSegmentSequence) LCD() int64 {
 	return acc
 }
 
+// GetReSegmentedSequenceFromValue uses the value provided, splits it between
+// all the segments of the sequence (by scaling it for each one) and generates a
+// new segment sequence with the scaled values. Each new segment in the new
+// sequence has length `segment.Scale(value)/value` while keeping the order. Of
+// course, for some segment.segments Scale(value) can be 0, so they are omitted.
+//
+// Additionally, the position of a given segment index can be tracked (since
+// empty segments are removed), so that you can reconstruct an ExecutionTuple,
+// if required. If the segment with the trackedIndex is not part of the new
+// sequence, or if a new sequence cannot be generated (for example, for 0
+// values), an error will be returned.
+func (ess ExecutionSegmentSequence) GetReSegmentedSequenceFromValue(value int64, trackedIndex int) (
+	newSequence ExecutionSegmentSequence, newIndex int, err error,
+) {
+	if value < 1 {
+		return nil, -1, fmt.Errorf("cannot generate new sequence for value %d", value)
+	}
+
+	if !ess.IsFull() {
+		return nil, -1, fmt.Errorf("only full sequences can be re-segmented")
+	}
+
+	newIndex = -1
+	newESS := make(ExecutionSegmentSequence, 0, len(ess)) // this can be smaller
+
+	prev := int64(0)
+	for i, segment := range ess {
+		newValue := segment.Scale(value)
+		if newValue == 0 {
+			continue
+		}
+		currentES := NewUncheckedExecutionSegment(big.NewRat(prev, value), big.NewRat(prev+newValue, value))
+		prev += newValue
+		if i == trackedIndex {
+			newIndex = len(newESS)
+		}
+		newESS = append(newESS, currentES)
+	}
+
+	if newIndex == -1 {
+		return nil, -1, fmt.Errorf(
+			"segment %d (%s) isn't present in the new sequence",
+			trackedIndex, ess[trackedIndex],
+		)
+	}
+
+	return newESS, newIndex, nil
+}
+
 // Greatest common divisor
 // https://en.wikipedia.org/wiki/Euclidean_algorithm
 func gcd(a, b int64) int64 {
@@ -466,7 +516,7 @@ func GetFilledExecutionSegmentSequence(
 			// is being planned/executed. So we make sure not to have a nil
 			// sequence, returning a full; "0,1" sequence instead, otherwise we
 			// will need to check for nil everywhere...
-			return ExecutionSegmentSequence{newExecutionSegment(zeroRat, oneRat)}
+			return ExecutionSegmentSequence{NewUncheckedExecutionSegment(zeroRat, oneRat)}
 		}
 		// We don't have a sequence, but we have a defined segment, so we
 		// fill around it with the missing pieces for a full sequence.
@@ -476,12 +526,12 @@ func GetFilledExecutionSegmentSequence(
 	}
 
 	if result[0].from.Cmp(zeroRat) != 0 {
-		es := newExecutionSegment(zeroRat, result[0].from)
+		es := NewUncheckedExecutionSegment(zeroRat, result[0].from)
 		result = append(ExecutionSegmentSequence{es}, result...)
 	}
 
 	if result[len(result)-1].to.Cmp(oneRat) != 0 {
-		es := newExecutionSegment(result[len(result)-1].to, oneRat)
+		es := NewUncheckedExecutionSegment(result[len(result)-1].to, oneRat)
 		result = append(result, es)
 	}
 	return result
@@ -636,41 +686,17 @@ func (essw *ExecutionSegmentSequenceWrapper) GetTuple(segmentIndex int) *Executi
 // if required. If the segment with the trackedIndex is not part of the new
 // sequence, or if a new sequence cannot be generated (for example, for 0
 // values), an error will be returned.
-func (essw *ExecutionSegmentSequenceWrapper) GetNewExecutionSegmentSequenceFromValue(value int64, trackedIndex int) (
+func (essw *ExecutionSegmentSequenceWrapper) GetReSegmentedSequenceFromValue(value int64, trackedIndex int) (
 	newSequence *ExecutionSegmentSequenceWrapper, newIndex int, err error,
 ) {
-	if value < 1 {
-		return nil, -1, fmt.Errorf("cannot generate new sequence for value %d", value)
-	}
-
-	if value%essw.lcd == 0 { // the value is perfectly divisible so we will get the same tuple
+	if value > 1 && value%essw.lcd == 0 { // the value is perfectly divisible so we will get the same tuple
 		return essw, trackedIndex, nil
 	}
 
-	newIndex = -1
-	newESS := make(ExecutionSegmentSequence, 0, len(essw.ExecutionSegmentSequence)) // this can be smaller
-
-	prev := int64(0)
-	for i := range essw.ExecutionSegmentSequence {
-		newValue := essw.ScaleInt64(i, value)
-		if newValue == 0 {
-			continue
-		}
-		currentES := newExecutionSegment(big.NewRat(prev, value), big.NewRat(prev+newValue, value))
-		prev += newValue
-		if i == trackedIndex {
-			newIndex = len(newESS)
-		}
-		newESS = append(newESS, currentES)
+	newESS, newIndex, err := essw.ExecutionSegmentSequence.GetReSegmentedSequenceFromValue(value, trackedIndex)
+	if err != nil {
+		return nil, -1, err
 	}
-
-	if newIndex == -1 {
-		return nil, -1, fmt.Errorf(
-			"segment %d (%s) isn't present in the new sequence",
-			trackedIndex, essw.ExecutionSegmentSequence[trackedIndex],
-		)
-	}
-
 	return NewExecutionSegmentSequenceWrapper(newESS), newIndex, nil
 }
 
@@ -720,7 +746,7 @@ func (et *ExecutionTuple) GetStripedOffsets() (int64, []int64, int64) {
 // returns the new tuple, or an error if the current segment isn't present in
 // the new sequence.
 func (et *ExecutionTuple) GetNewExecutionTupleFromValue(value int64) (*ExecutionTuple, error) {
-	newSequenceWrapper, newIndex, err := et.Sequence.GetNewExecutionSegmentSequenceFromValue(value, et.SegmentIndex)
+	newSequenceWrapper, newIndex, err := et.Sequence.GetReSegmentedSequenceFromValue(value, et.SegmentIndex)
 	if err != nil {
 		return nil, err
 	}

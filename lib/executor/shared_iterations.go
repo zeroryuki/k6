@@ -73,17 +73,18 @@ var _ lib.ExecutorConfig = &SharedIterationsConfig{}
 
 // GetVUs returns the scaled VUs for the executor.
 func (sic SharedIterationsConfig) GetVUs(et *lib.ExecutionTuple) int64 {
-	return et.ScaleInt64(sic.VUs.Int64)
+	return et.Segment.Scale(sic.VUs.Int64)
 }
 
 // GetIterations returns the scaled iteration count for the executor.
 func (sic SharedIterationsConfig) GetIterations(et *lib.ExecutionTuple) int64 {
-	// TODO: Optimize this by probably changing the whole Config API
+	// TODO: Optimize this by probably changing the whole Config API... we also
+	// don't need the whole tuple here, just the new segment
 	newTuple, err := et.GetNewExecutionTupleFromValue(sic.VUs.Int64)
 	if err != nil {
 		return 0
 	}
-	return newTuple.ScaleInt64(sic.Iterations.Int64)
+	return newTuple.Segment.Scale(sic.Iterations.Int64)
 }
 
 // GetDescription returns a human-readable description of the executor options
@@ -167,7 +168,7 @@ var _ lib.Executor = &SharedIterations{}
 
 // HasWork reports whether there is any work to be done for the given execution segment.
 func (sic SharedIterationsConfig) HasWork(et *lib.ExecutionTuple) bool {
-	return sic.GetVUs(et) > 0 && sic.GetIterations(et) > 0
+	return sic.GetVUs(et) > 0 // iterations >= VUs, due to the validation above
 }
 
 // Init values needed for the execution
@@ -184,7 +185,7 @@ func (si *SharedIterations) Init(ctx context.Context) error {
 // nolint:funlen
 func (si SharedIterations) Run(parentCtx context.Context, out chan<- stats.SampleContainer) (err error) {
 	numVUs := si.config.GetVUs(si.executionState.ExecutionTuple)
-	iterations := si.et.ScaleInt64(si.config.Iterations.Int64)
+	iterations := si.et.Segment.Scale(si.config.Iterations.Int64)
 	duration := time.Duration(si.config.MaxDuration.Duration)
 	gracefulStop := si.config.GetGracefulStop()
 
