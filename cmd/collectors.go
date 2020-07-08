@@ -24,8 +24,6 @@ import (
 	"fmt"
 	"strings"
 
-	"gopkg.in/guregu/null.v3"
-
 	"github.com/kelseyhightower/envconfig"
 	"github.com/pkg/errors"
 	"github.com/spf13/afero"
@@ -42,16 +40,21 @@ import (
 	"github.com/loadimpact/k6/stats/kafka"
 	"github.com/loadimpact/k6/stats/statsd"
 	"github.com/loadimpact/k6/stats/statsd/common"
+	"github.com/loadimpact/k6/stats/timescaledb"
+	"github.com/pkg/errors"
+	"github.com/spf13/afero"
+	"gopkg.in/guregu/null.v3"
 )
 
 const (
-	collectorInfluxDB = "influxdb"
-	collectorJSON     = "json"
-	collectorKafka    = "kafka"
-	collectorCloud    = "cloud"
-	collectorStatsD   = "statsd"
-	collectorDatadog  = "datadog"
-	collectorCSV      = "csv"
+	collectorInfluxDB    = "influxdb"
+	collectorJSON        = "json"
+	collectorKafka       = "kafka"
+	collectorCloud       = "cloud"
+	collectorStatsD      = "statsd"
+	collectorDatadog     = "datadog"
+	collectorTimescaleDB = "timescaledb"
+	collectorCSV         = "csv"
 )
 
 func parseCollector(s string) (t, arg string) {
@@ -118,6 +121,17 @@ func getCollector(
 			return nil, err
 		}
 		return datadog.New(config)
+	case collectorTimescaleDB:
+		config := timescaledb.NewConfig().Apply(conf.Collectors.TimescaleDB)
+		if err := envconfig.Process("", &config); err != nil {
+			return nil, err
+		}
+		urlConfig, err := timescaledb.ParseURL(arg)
+		if err != nil {
+			return nil, err
+		}
+		config = config.Apply(urlConfig)
+		return timescaledb.New(config, conf.Options)
 	case collectorCSV:
 		config := csv.NewConfig().Apply(conf.Collectors.CSV)
 		if err := envconfig.Process("", &config); err != nil {
