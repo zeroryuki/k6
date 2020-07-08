@@ -40,12 +40,12 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/time/rate"
 
-	"github.com/loadimpact/k6/js/common"
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/consts"
-	"github.com/loadimpact/k6/lib/netext"
-	"github.com/loadimpact/k6/loader"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/js/common"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/consts"
+	"github.com/zeroryuki/k6/lib/netext"
+	"github.com/zeroryuki/k6/loader"
+	"github.com/zeroryuki/k6/stats"
 )
 
 //nolint:gochecknoglobals

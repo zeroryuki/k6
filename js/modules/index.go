@@ -21,14 +21,14 @@
 package modules
 
 import (
-	"github.com/loadimpact/k6/js/modules/k6"
-	"github.com/loadimpact/k6/js/modules/k6/crypto"
-	"github.com/loadimpact/k6/js/modules/k6/crypto/x509"
-	"github.com/loadimpact/k6/js/modules/k6/encoding"
-	"github.com/loadimpact/k6/js/modules/k6/html"
-	"github.com/loadimpact/k6/js/modules/k6/http"
-	"github.com/loadimpact/k6/js/modules/k6/metrics"
-	"github.com/loadimpact/k6/js/modules/k6/ws"
+	"github.com/zeroryuki/k6/js/modules/k6"
+	"github.com/zeroryuki/k6/js/modules/k6/crypto"
+	"github.com/zeroryuki/k6/js/modules/k6/crypto/x509"
+	"github.com/zeroryuki/k6/js/modules/k6/encoding"
+	"github.com/zeroryuki/k6/js/modules/k6/html"
+	"github.com/zeroryuki/k6/js/modules/k6/http"
+	"github.com/zeroryuki/k6/js/modules/k6/metrics"
+	"github.com/zeroryuki/k6/js/modules/k6/ws"
 )
 
 // Index of module implementations.

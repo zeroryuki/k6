@@ -33,17 +33,17 @@ import (
 	"github.com/spf13/pflag"
 	"gopkg.in/guregu/null.v3"
 
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/executor"
-	"github.com/loadimpact/k6/stats"
-	"github.com/loadimpact/k6/stats/cloud"
-	"github.com/loadimpact/k6/stats/csv"
-	"github.com/loadimpact/k6/stats/datadog"
-	"github.com/loadimpact/k6/stats/influxdb"
-	"github.com/loadimpact/k6/stats/kafka"
-	"github.com/loadimpact/k6/stats/statsd/common"
-	"github.com/loadimpact/k6/stats/timescaledb"
-	"github.com/loadimpact/k6/ui"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/executor"
+	"github.com/zeroryuki/k6/stats"
+	"github.com/zeroryuki/k6/stats/cloud"
+	"github.com/zeroryuki/k6/stats/csv"
+	"github.com/zeroryuki/k6/stats/datadog"
+	"github.com/zeroryuki/k6/stats/influxdb"
+	"github.com/zeroryuki/k6/stats/kafka"
+	"github.com/zeroryuki/k6/stats/statsd/common"
+	"github.com/zeroryuki/k6/stats/timescaledb"
+	"github.com/zeroryuki/k6/ui"
 )
 
 // configFlagSet returns a FlagSet with the default run configuration flags.

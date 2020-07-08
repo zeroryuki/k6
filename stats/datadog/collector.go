@@ -21,8 +21,8 @@
 package datadog
 
 import (
-	"github.com/loadimpact/k6/stats"
-	"github.com/loadimpact/k6/stats/statsd/common"
+	"github.com/zeroryuki/k6/stats"
+	"github.com/zeroryuki/k6/stats/statsd/common"
 )
 
 type tagHandler stats.TagSet

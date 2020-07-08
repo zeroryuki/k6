@@ -48,12 +48,12 @@ import (
 	"github.com/stretchr/testify/require"
 	"gopkg.in/guregu/null.v3"
 
-	"github.com/loadimpact/k6/js/common"
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/metrics"
-	"github.com/loadimpact/k6/lib/testutils"
-	"github.com/loadimpact/k6/lib/testutils/httpmultibin"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/js/common"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/metrics"
+	"github.com/zeroryuki/k6/lib/testutils"
+	"github.com/zeroryuki/k6/lib/testutils/httpmultibin"
+	"github.com/zeroryuki/k6/stats"
 )
 
 func assertRequestMetricsEmitted(t *testing.T, sampleContainers []stats.SampleContainer, method, url, name string, status int, group string) {

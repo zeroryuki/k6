@@ -29,9 +29,9 @@ import (
 
 	"github.com/dop251/goja"
 
-	"github.com/loadimpact/k6/js/common"
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/js/common"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/stats"
 )
 
 var nameRegexString = "^[\\p{L}\\p{N}\\._ !\\?/&#\\(\\)<>%-]{1,128}$"

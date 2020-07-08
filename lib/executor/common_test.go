@@ -28,10 +28,10 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
 
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/testutils"
-	"github.com/loadimpact/k6/lib/testutils/minirunner"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/testutils"
+	"github.com/zeroryuki/k6/lib/testutils/minirunner"
+	"github.com/zeroryuki/k6/stats"
 )
 
 func simpleRunner(vuFn func(context.Context) error) lib.Runner {

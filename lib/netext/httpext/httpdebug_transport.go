@@ -37,9 +37,9 @@ type httpDebugTransport struct {
 // RoundTrip prints passing HTTP requests and received responses
 //
 // TODO: massively improve this, because the printed information can be wrong:
-//  - https://github.com/loadimpact/k6/issues/986
-//  - https://github.com/loadimpact/k6/issues/1042
-//  - https://github.com/loadimpact/k6/issues/774
+//  - https://github.com/zeroryuki/k6/issues/986
+//  - https://github.com/zeroryuki/k6/issues/1042
+//  - https://github.com/zeroryuki/k6/issues/774
 func (t httpDebugTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	t.debugRequest(req)
 	resp, err := t.originalTransport.RoundTrip(req)

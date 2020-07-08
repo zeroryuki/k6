@@ -38,18 +38,18 @@ import (
 	"github.com/stretchr/testify/require"
 	"gopkg.in/guregu/null.v3"
 
-	"github.com/loadimpact/k6/js"
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/executor"
-	"github.com/loadimpact/k6/lib/metrics"
-	"github.com/loadimpact/k6/lib/netext"
-	"github.com/loadimpact/k6/lib/netext/httpext"
-	"github.com/loadimpact/k6/lib/testutils"
-	"github.com/loadimpact/k6/lib/testutils/httpmultibin"
-	"github.com/loadimpact/k6/lib/testutils/minirunner"
-	"github.com/loadimpact/k6/lib/types"
-	"github.com/loadimpact/k6/loader"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/js"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/executor"
+	"github.com/zeroryuki/k6/lib/metrics"
+	"github.com/zeroryuki/k6/lib/netext"
+	"github.com/zeroryuki/k6/lib/netext/httpext"
+	"github.com/zeroryuki/k6/lib/testutils"
+	"github.com/zeroryuki/k6/lib/testutils/httpmultibin"
+	"github.com/zeroryuki/k6/lib/testutils/minirunner"
+	"github.com/zeroryuki/k6/lib/types"
+	"github.com/zeroryuki/k6/loader"
+	"github.com/zeroryuki/k6/stats"
 )
 
 func newTestExecutionScheduler(
@@ -934,7 +934,7 @@ func TestExecutionSchedulerEndIterations(t *testing.T) {
 	assert.Equal(t, uint64(100), execScheduler.GetState().GetFullIterationCount())
 	assert.Equal(t, uint64(0), execScheduler.GetState().GetPartialIterationCount())
 	assert.Equal(t, int64(100), i)
-	require.Equal(t, 100, len(samples)) // TODO: change to 200 https://github.com/loadimpact/k6/issues/1250
+	require.Equal(t, 100, len(samples)) // TODO: change to 200 https://github.com/zeroryuki/k6/issues/1250
 	for i := 0; i < 100; i++ {
 		mySample, ok := <-samples
 		require.True(t, ok)

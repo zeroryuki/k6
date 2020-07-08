@@ -23,7 +23,7 @@ package json
 import (
 	"time"
 
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/stats"
 )
 
 type Envelope struct {

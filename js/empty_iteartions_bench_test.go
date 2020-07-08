@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/stats"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

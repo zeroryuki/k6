@@ -34,10 +34,10 @@ import (
 	"github.com/stretchr/testify/require"
 	"gopkg.in/guregu/null.v3"
 
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/metrics"
-	"github.com/loadimpact/k6/lib/types"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/metrics"
+	"github.com/zeroryuki/k6/lib/types"
+	"github.com/zeroryuki/k6/stats"
 )
 
 func getTestRampingArrivalRateConfig() *RampingArrivalRateConfig {

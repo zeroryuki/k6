@@ -28,9 +28,9 @@ import (
 	"github.com/spf13/cobra"
 	"gopkg.in/guregu/null.v3"
 
-	"github.com/loadimpact/k6/lib/consts"
-	"github.com/loadimpact/k6/stats/cloud"
-	"github.com/loadimpact/k6/ui"
+	"github.com/zeroryuki/k6/lib/consts"
+	"github.com/zeroryuki/k6/stats/cloud"
+	"github.com/zeroryuki/k6/ui"
 )
 
 // loginCloudCommand represents the 'login cloud' command

@@ -34,7 +34,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/loadimpact/k6/js/common"
+	"github.com/zeroryuki/k6/js/common"
 )
 
 // X509 certificate functionality

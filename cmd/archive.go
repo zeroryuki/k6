@@ -27,7 +27,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
-	"github.com/loadimpact/k6/loader"
+	"github.com/zeroryuki/k6/loader"
 )
 
 var archiveOut = "archive.tar"

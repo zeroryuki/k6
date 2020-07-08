@@ -61,17 +61,17 @@ resource "aws_instance" "loadgen" {
 	}
 	provisioner "remote-exec" {
 		inline = [
-			"mkdir -p /home/ubuntu/go/src/github.com/loadimpact/k6",
+			"mkdir -p /home/ubuntu/go/src/github.com/zeroryuki/k6",
 			"echo 'export GOPATH=$HOME/go' >> /home/ubuntu/.profile",
 			"echo 'export PATH=$PATH:$GOPATH/bin' >> /home/ubuntu/.profile",
 			"sudo mkdir -p /etc/salt",
-			"sudo ln -s /home/ubuntu/go/src/github.com/loadimpact/k6/external/aws/salt/master.yml /etc/salt/master",
-			"sudo ln -s /home/ubuntu/go/src/github.com/loadimpact/k6/external/aws/salt/grains_loadgen.yml /etc/salt/grains",
+			"sudo ln -s /home/ubuntu/go/src/github.com/zeroryuki/k6/external/aws/salt/master.yml /etc/salt/master",
+			"sudo ln -s /home/ubuntu/go/src/github.com/zeroryuki/k6/external/aws/salt/grains_loadgen.yml /etc/salt/grains",
 		]
 	}
 	provisioner "file" {
 		source = "../../"
-		destination = "/home/ubuntu/go/src/github.com/loadimpact/k6"
+		destination = "/home/ubuntu/go/src/github.com/zeroryuki/k6"
 	}
 	provisioner "remote-exec" {
 		inline = [

@@ -25,7 +25,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/loadimpact/k6/lib/consts"
+	"github.com/zeroryuki/k6/lib/consts"
 )
 
 // versionCmd represents the version command.

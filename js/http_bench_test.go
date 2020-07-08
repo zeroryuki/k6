@@ -28,9 +28,9 @@ import (
 	"github.com/stretchr/testify/require"
 	"gopkg.in/guregu/null.v3"
 
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/testutils/httpmultibin"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/testutils/httpmultibin"
+	"github.com/zeroryuki/k6/stats"
 )
 
 func BenchmarkHTTPRequests(b *testing.B) {

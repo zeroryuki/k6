@@ -29,10 +29,10 @@ import (
 	"github.com/dop251/goja"
 	"github.com/pkg/errors"
 
-	"github.com/loadimpact/k6/js/common"
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/metrics"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/js/common"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/metrics"
+	"github.com/zeroryuki/k6/stats"
 )
 
 type K6 struct{}

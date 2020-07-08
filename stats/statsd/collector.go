@@ -21,7 +21,7 @@
 package statsd
 
 import (
-	"github.com/loadimpact/k6/stats/statsd/common"
+	"github.com/zeroryuki/k6/stats/statsd/common"
 )
 
 // New creates a new statsd connector client

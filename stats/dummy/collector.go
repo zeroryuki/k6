@@ -23,8 +23,8 @@ package dummy
 import (
 	"context"
 
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/stats"
 )
 
 // Collector implements the lib.Collector interface and should be used only for testing

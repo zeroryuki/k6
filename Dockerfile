@@ -1,8 +1,8 @@
 FROM golang:1.14-alpine as builder
-WORKDIR $GOPATH/src/github.com/loadimpact/k6
+WORKDIR $GOPATH/src/github.com/zeroryuki/k6
 ADD . .
 RUN apk --no-cache add git
-RUN CGO_ENABLED=0 go install -a -trimpath -ldflags "-s -w -X github.com/loadimpact/k6/lib/consts.VersionDetails=$(date -u +"%FT%T%z")/$(git describe --always --long --dirty)"
+RUN CGO_ENABLED=0 go install -a -trimpath -ldflags "-s -w -X github.com/zeroryuki/k6/lib/consts.VersionDetails=$(date -u +"%FT%T%z")/$(git describe --always --long --dirty)"
 
 FROM alpine:3.11
 RUN apk add --no-cache ca-certificates && \

@@ -29,8 +29,8 @@ import (
 	"github.com/DataDog/datadog-go/statsd"
 	"github.com/sirupsen/logrus"
 
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/stats"
 )
 
 var _ lib.Collector = &Collector{}

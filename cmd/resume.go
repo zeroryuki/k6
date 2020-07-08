@@ -26,9 +26,9 @@ import (
 	"github.com/spf13/cobra"
 	"gopkg.in/guregu/null.v3"
 
-	"github.com/loadimpact/k6/api/v1"
-	"github.com/loadimpact/k6/api/v1/client"
-	"github.com/loadimpact/k6/ui"
+	"github.com/zeroryuki/k6/api/v1"
+	"github.com/zeroryuki/k6/api/v1/client"
+	"github.com/zeroryuki/k6/ui"
 )
 
 // resumeCmd represents the resume command

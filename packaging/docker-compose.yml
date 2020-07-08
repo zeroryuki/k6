@@ -7,6 +7,6 @@ services:
     command: |
       bash -c "
       CGO_ENABLED=0 GOARCH=amd64 go build -a -ldflags '-s -w' -o /tmp/k6
-      /go/src/github.com/loadimpact/k6/packaging/gen-packages.sh"
+      /go/src/github.com/zeroryuki/k6/packaging/gen-packages.sh"
     volumes:
-      - ..:/go/src/github.com/loadimpact/k6
+      - ..:/go/src/github.com/zeroryuki/k6

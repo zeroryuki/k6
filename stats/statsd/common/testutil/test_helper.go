@@ -29,9 +29,9 @@ import (
 	"github.com/stretchr/testify/require"
 	"gopkg.in/guregu/null.v3"
 
-	"github.com/loadimpact/k6/lib/types"
-	"github.com/loadimpact/k6/stats"
-	"github.com/loadimpact/k6/stats/statsd/common"
+	"github.com/zeroryuki/k6/lib/types"
+	"github.com/zeroryuki/k6/stats"
+	"github.com/zeroryuki/k6/stats/statsd/common"
 )
 
 // BaseTest is a helper function to test statsd/datadog collector throughtly

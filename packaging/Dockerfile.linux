@@ -2,7 +2,7 @@ FROM golang:1.10.2-stretch
 
 RUN curl https://glide.sh/get | sh
 
-WORKDIR /go/src/github.com/loadimpact/k6
+WORKDIR /go/src/github.com/zeroryuki/k6
 
 RUN go get github.com/mh-cbon/go-bin-deb \
   && cd /go/src/github.com/mh-cbon/go-bin-deb \

@@ -31,7 +31,7 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/loadimpact/k6/lib"
+	"github.com/zeroryuki/k6/lib"
 )
 
 type ResultStatus int

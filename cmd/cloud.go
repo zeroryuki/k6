@@ -37,12 +37,12 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/consts"
-	"github.com/loadimpact/k6/loader"
-	"github.com/loadimpact/k6/stats/cloud"
-	"github.com/loadimpact/k6/ui"
-	"github.com/loadimpact/k6/ui/pb"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/consts"
+	"github.com/zeroryuki/k6/loader"
+	"github.com/zeroryuki/k6/stats/cloud"
+	"github.com/zeroryuki/k6/ui"
+	"github.com/zeroryuki/k6/ui/pb"
 )
 
 const (

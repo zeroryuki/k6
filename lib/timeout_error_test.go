@@ -25,7 +25,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/loadimpact/k6/lib/consts"
+	"github.com/zeroryuki/k6/lib/consts"
 )
 
 func TestTimeoutError(t *testing.T) {

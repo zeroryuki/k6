@@ -33,11 +33,11 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/stretchr/testify/assert"
 
-	"github.com/loadimpact/k6/js/common"
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/metrics"
-	"github.com/loadimpact/k6/lib/testutils/httpmultibin"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/js/common"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/metrics"
+	"github.com/zeroryuki/k6/lib/testutils/httpmultibin"
+	"github.com/zeroryuki/k6/stats"
 )
 
 func assertSessionMetricsEmitted(t *testing.T, sampleContainers []stats.SampleContainer, subprotocol, url string, status int, group string) {
@@ -439,7 +439,7 @@ func TestSystemTags(t *testing.T) {
 	rt.SetFieldNameMapper(common.FieldNameMapper{})
 
 	//TODO: test for actual tag values after removing the dependency on the
-	// external service demos.kaazing.com (https://github.com/loadimpact/k6/issues/537)
+	// external service demos.kaazing.com (https://github.com/zeroryuki/k6/issues/537)
 	testedSystemTags := []string{"group", "status", "subproto", "url", "ip"}
 
 	samples := make(chan stats.SampleContainer, 1000)

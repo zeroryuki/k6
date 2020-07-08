@@ -30,7 +30,7 @@ import (
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/require"
 
-	"github.com/loadimpact/k6/lib/fsext"
+	"github.com/zeroryuki/k6/lib/fsext"
 )
 
 type errorReader string

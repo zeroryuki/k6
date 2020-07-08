@@ -16,7 +16,7 @@ Vagrant.configure(2) do |config|
 
 		loadgen.vm.synced_folder "external/salt", "/srv/salt", type: "rsync"
 		loadgen.vm.synced_folder "external/pillar", "/srv/pillar", type: "rsync"
-		loadgen.vm.synced_folder ".", "/home/vagrant/go/src/github.com/loadimpact/k6", type: "rsync"
+		loadgen.vm.synced_folder ".", "/home/vagrant/go/src/github.com/zeroryuki/k6", type: "rsync"
 
 		loadgen.vm.provision :salt do |salt|
 			salt.bootstrap_options = "-F -c /tmp -i loadgen"

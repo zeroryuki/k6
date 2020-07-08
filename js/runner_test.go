@@ -45,20 +45,20 @@ import (
 	"github.com/stretchr/testify/require"
 	"gopkg.in/guregu/null.v3"
 
-	"github.com/loadimpact/k6/core"
-	"github.com/loadimpact/k6/core/local"
-	"github.com/loadimpact/k6/js/common"
-	"github.com/loadimpact/k6/js/modules/k6"
-	k6http "github.com/loadimpact/k6/js/modules/k6/http"
-	k6metrics "github.com/loadimpact/k6/js/modules/k6/metrics"
-	"github.com/loadimpact/k6/js/modules/k6/ws"
-	"github.com/loadimpact/k6/lib"
-	_ "github.com/loadimpact/k6/lib/executor" // TODO: figure out something better
-	"github.com/loadimpact/k6/lib/metrics"
-	"github.com/loadimpact/k6/lib/testutils/httpmultibin"
-	"github.com/loadimpact/k6/lib/types"
-	"github.com/loadimpact/k6/stats"
-	"github.com/loadimpact/k6/stats/dummy"
+	"github.com/zeroryuki/k6/core"
+	"github.com/zeroryuki/k6/core/local"
+	"github.com/zeroryuki/k6/js/common"
+	"github.com/zeroryuki/k6/js/modules/k6"
+	k6http "github.com/zeroryuki/k6/js/modules/k6/http"
+	k6metrics "github.com/zeroryuki/k6/js/modules/k6/metrics"
+	"github.com/zeroryuki/k6/js/modules/k6/ws"
+	"github.com/zeroryuki/k6/lib"
+	_ "github.com/zeroryuki/k6/lib/executor" // TODO: figure out something better
+	"github.com/zeroryuki/k6/lib/metrics"
+	"github.com/zeroryuki/k6/lib/testutils/httpmultibin"
+	"github.com/zeroryuki/k6/lib/types"
+	"github.com/zeroryuki/k6/stats"
+	"github.com/zeroryuki/k6/stats/dummy"
 )
 
 func TestRunnerNew(t *testing.T) {

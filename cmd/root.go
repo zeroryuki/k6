@@ -35,7 +35,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
-	"github.com/loadimpact/k6/lib/consts"
+	"github.com/zeroryuki/k6/lib/consts"
 )
 
 var BannerColor = color.New(color.FgCyan)

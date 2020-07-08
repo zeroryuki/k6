@@ -36,12 +36,12 @@ import (
 	"github.com/stretchr/testify/require"
 	"gopkg.in/guregu/null.v3"
 
-	"github.com/loadimpact/k6/core"
-	"github.com/loadimpact/k6/core/local"
-	"github.com/loadimpact/k6/js"
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/types"
-	"github.com/loadimpact/k6/loader"
+	"github.com/zeroryuki/k6/core"
+	"github.com/zeroryuki/k6/core/local"
+	"github.com/zeroryuki/k6/js"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/types"
+	"github.com/zeroryuki/k6/loader"
 )
 
 func TestSetupData(t *testing.T) {

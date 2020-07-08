@@ -28,8 +28,8 @@ import (
 
 	"gopkg.in/guregu/null.v3"
 
-	"github.com/loadimpact/k6/lib/consts"
-	"github.com/loadimpact/k6/lib/types"
+	"github.com/zeroryuki/k6/lib/consts"
+	"github.com/zeroryuki/k6/lib/types"
 )
 
 // DefaultGracefulStopValue is the graceful top value for all executors, unless

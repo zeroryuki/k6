@@ -39,15 +39,15 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 
-	"github.com/loadimpact/k6/api"
-	"github.com/loadimpact/k6/core"
-	"github.com/loadimpact/k6/core/local"
-	"github.com/loadimpact/k6/js"
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/consts"
-	"github.com/loadimpact/k6/loader"
-	"github.com/loadimpact/k6/ui"
-	"github.com/loadimpact/k6/ui/pb"
+	"github.com/zeroryuki/k6/api"
+	"github.com/zeroryuki/k6/core"
+	"github.com/zeroryuki/k6/core/local"
+	"github.com/zeroryuki/k6/js"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/consts"
+	"github.com/zeroryuki/k6/loader"
+	"github.com/zeroryuki/k6/ui"
+	"github.com/zeroryuki/k6/ui/pb"
 )
 
 const (
@@ -256,7 +256,7 @@ a commandline interface for interacting with it.`,
 			lingerCancel() // stop the test run, metric processing is cancelled below
 
 			// If we get a second signal, we immediately exit, so something like
-			// https://github.com/loadimpact/k6/issues/971 never happens again
+			// https://github.com/zeroryuki/k6/issues/971 never happens again
 			sig = <-sigC
 			logger.WithField("sig", sig).Error("Aborting k6 in response to signal")
 			globalCancel() // not that it matters, given the following command...

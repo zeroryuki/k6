@@ -31,8 +31,8 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/loadimpact/k6/stats"
-	"github.com/loadimpact/k6/ui/pb"
+	"github.com/zeroryuki/k6/stats"
+	"github.com/zeroryuki/k6/ui/pb"
 )
 
 // TODO: remove globals and use some type of explicit dependency injection?

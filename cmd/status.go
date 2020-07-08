@@ -25,8 +25,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/loadimpact/k6/api/v1/client"
-	"github.com/loadimpact/k6/ui"
+	"github.com/zeroryuki/k6/api/v1/client"
+	"github.com/zeroryuki/k6/ui"
 )
 
 // statusCmd represents the status command

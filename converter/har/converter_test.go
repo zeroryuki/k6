@@ -27,9 +27,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/loadimpact/k6/js"
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/loader"
+	"github.com/zeroryuki/k6/js"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/loader"
 )
 
 func TestBuildK6Headers(t *testing.T) {

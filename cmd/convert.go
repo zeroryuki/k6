@@ -29,8 +29,8 @@ import (
 	"github.com/spf13/cobra"
 	"gopkg.in/guregu/null.v3"
 
-	"github.com/loadimpact/k6/converter/har"
-	"github.com/loadimpact/k6/lib"
+	"github.com/zeroryuki/k6/converter/har"
+	"github.com/zeroryuki/k6/lib"
 )
 
 var (

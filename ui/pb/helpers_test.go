@@ -30,7 +30,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/loadimpact/k6/lib/types"
+	"github.com/zeroryuki/k6/lib/types"
 )
 
 func TestGetFixedLengthInt(t *testing.T) {

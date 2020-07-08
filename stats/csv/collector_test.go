@@ -32,8 +32,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/guregu/null.v3"
 
-	"github.com/loadimpact/k6/lib/types"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/lib/types"
+	"github.com/zeroryuki/k6/stats"
 )
 
 func TestMakeHeader(t *testing.T) {

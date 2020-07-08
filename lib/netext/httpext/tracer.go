@@ -28,8 +28,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/loadimpact/k6/lib/metrics"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/lib/metrics"
+	"github.com/zeroryuki/k6/stats"
 )
 
 // A Trail represents detailed information about an HTTP request.

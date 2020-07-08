@@ -23,7 +23,7 @@ package common
 import (
 	"time"
 
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/stats"
 )
 
 // Sample defines a sample type

@@ -32,7 +32,7 @@ import (
 	"github.com/manyminds/api2go/jsonapi"
 	"github.com/sirupsen/logrus"
 
-	"github.com/loadimpact/k6/api/v1"
+	"github.com/zeroryuki/k6/api/v1"
 )
 
 // Client is a simple HTTP client for the REST API.

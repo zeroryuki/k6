@@ -29,9 +29,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/loadimpact/k6/js/common"
-	"github.com/loadimpact/k6/lib/netext/httpext"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/js/common"
+	"github.com/zeroryuki/k6/lib/netext/httpext"
+	"github.com/zeroryuki/k6/stats"
 )
 
 const testGetFormHTML = `

@@ -23,7 +23,7 @@ package common
 import (
 	"github.com/dop251/goja"
 
-	"github.com/loadimpact/k6/js/compiler"
+	"github.com/zeroryuki/k6/js/compiler"
 )
 
 // RunString Runs an string in the given runtime. Use this if writing ES5 in tests isn't a problem.

@@ -29,8 +29,8 @@ import (
 	client "github.com/influxdata/influxdb1-client/v2"
 	"github.com/sirupsen/logrus"
 
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/stats"
 )
 
 // Verify that Collector implements lib.Collector

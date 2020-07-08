@@ -27,9 +27,9 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/negroni"
 
-	"github.com/loadimpact/k6/api/common"
-	v1 "github.com/loadimpact/k6/api/v1"
-	"github.com/loadimpact/k6/core"
+	"github.com/zeroryuki/k6/api/common"
+	v1 "github.com/zeroryuki/k6/api/v1"
+	"github.com/zeroryuki/k6/core"
 )
 
 func NewHandler() http.Handler {

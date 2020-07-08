@@ -23,7 +23,7 @@ package lib
 import (
 	"context"
 
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/stats"
 )
 
 // ActiveVU represents an actively running virtual user.

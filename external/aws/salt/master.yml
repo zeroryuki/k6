@@ -3,7 +3,7 @@ auto_accept: True
 state_verbose: False
 file_roots:
   base:
-    - /home/ubuntu/go/src/github.com/loadimpact/k6/external/salt
+    - /home/ubuntu/go/src/github.com/zeroryuki/k6/external/salt
 pillar_roots:
   base:
-    - /home/ubuntu/go/src/github.com/loadimpact/k6/external/pillar
+    - /home/ubuntu/go/src/github.com/zeroryuki/k6/external/pillar

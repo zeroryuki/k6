@@ -28,9 +28,9 @@ import (
 	"github.com/spf13/afero"
 	"github.com/spf13/cobra"
 
-	"github.com/loadimpact/k6/lib/types"
-	"github.com/loadimpact/k6/stats/influxdb"
-	"github.com/loadimpact/k6/ui"
+	"github.com/zeroryuki/k6/lib/types"
+	"github.com/zeroryuki/k6/stats/influxdb"
+	"github.com/zeroryuki/k6/ui"
 )
 
 // loginInfluxDBCommand represents the 'login influxdb' command

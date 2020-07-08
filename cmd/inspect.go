@@ -28,9 +28,9 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/loadimpact/k6/js"
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/loader"
+	"github.com/zeroryuki/k6/js"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/loader"
 )
 
 // inspectCmd represents the resume command

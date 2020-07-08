@@ -28,9 +28,9 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/netext"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/netext"
+	"github.com/zeroryuki/k6/stats"
 )
 
 // transport is an implementation of http.RoundTripper that will measure and emit

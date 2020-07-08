@@ -27,8 +27,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/loadimpact/k6/js/common"
-	"github.com/loadimpact/k6/lib/netext/httpext"
+	"github.com/zeroryuki/k6/js/common"
+	"github.com/zeroryuki/k6/lib/netext/httpext"
 )
 
 func TestTagURL(t *testing.T) {

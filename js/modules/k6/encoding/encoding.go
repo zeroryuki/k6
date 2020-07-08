@@ -24,7 +24,7 @@ import (
 	"context"
 	"encoding/base64"
 
-	"github.com/loadimpact/k6/js/common"
+	"github.com/zeroryuki/k6/js/common"
 )
 
 type Encoding struct{}

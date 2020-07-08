@@ -23,7 +23,7 @@ package lib
 import (
 	"context"
 
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/stats"
 )
 
 // RunStatus values can be used by k6 to denote how a script run ends

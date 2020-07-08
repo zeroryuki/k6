@@ -29,10 +29,10 @@ import (
 	"github.com/sirupsen/logrus"
 	"gopkg.in/guregu/null.v3"
 
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/types"
-	"github.com/loadimpact/k6/stats"
-	"github.com/loadimpact/k6/ui/pb"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/types"
+	"github.com/zeroryuki/k6/stats"
+	"github.com/zeroryuki/k6/ui/pb"
 )
 
 const constantVUsType = "constant-vus"

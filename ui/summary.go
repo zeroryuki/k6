@@ -32,8 +32,8 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/text/unicode/norm"
 
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/stats"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/stats"
 )
 
 const (

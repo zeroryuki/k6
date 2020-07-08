@@ -30,12 +30,12 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/afero"
 
-	"github.com/loadimpact/k6/js/common"
-	"github.com/loadimpact/k6/js/compiler"
-	jslib "github.com/loadimpact/k6/js/lib"
-	"github.com/loadimpact/k6/lib"
-	"github.com/loadimpact/k6/lib/consts"
-	"github.com/loadimpact/k6/loader"
+	"github.com/zeroryuki/k6/js/common"
+	"github.com/zeroryuki/k6/js/compiler"
+	jslib "github.com/zeroryuki/k6/js/lib"
+	"github.com/zeroryuki/k6/lib"
+	"github.com/zeroryuki/k6/lib/consts"
+	"github.com/zeroryuki/k6/loader"
 )
 
 // A Bundle is a self-contained bundle of scripts and resources.

@@ -4,16 +4,16 @@
 <p align="center">A modern load testing tool for developers and testers in the DevOps era.</p>
 
 <p align="center">
-  <a href="https://github.com/loadimpact/k6/releases"><img src="https://img.shields.io/github/release/loadimpact/k6.svg" alt="Github release"></a>
-  <a href="https://circleci.com/gh/loadimpact/k6/tree/master"><img src="https://img.shields.io/circleci/project/github/loadimpact/k6/master.svg" alt="Build status"></a>
-  <a href="https://goreportcard.com/report/github.com/loadimpact/k6"><img src="https://goreportcard.com/badge/github.com/loadimpact/k6" alt="Go Report Card"></a>
-  <a href="https://codecov.io/gh/loadimpact/k6"><img src="https://img.shields.io/codecov/c/github/loadimpact/k6/master.svg" alt="Codecov branch"></a>
+  <a href="https://github.com/zeroryuki/k6/releases"><img src="https://img.shields.io/github/release/zeroryuki/k6.svg" alt="Github release"></a>
+  <a href="https://circleci.com/gh/zeroryuki/k6/tree/master"><img src="https://img.shields.io/circleci/project/github/zeroryuki/k6/master.svg" alt="Build status"></a>
+  <a href="https://goreportcard.com/report/github.com/zeroryuki/k6"><img src="https://goreportcard.com/badge/github.com/zeroryuki/k6" alt="Go Report Card"></a>
+  <a href="https://codecov.io/gh/zeroryuki/k6"><img src="https://img.shields.io/codecov/c/github/zeroryuki/k6/master.svg" alt="Codecov branch"></a>
   <br>
   <a href="https://twitter.com/k6_io"><img src="https://img.shields.io/badge/twitter-@k6_io-55acee.svg" alt="@k6_io on Twitter"></a>
   <a href="https://k6.io/slack"><img src="https://img.shields.io/badge/Slack-k6-ff69b4.svg" alt="Slack channel"></a>
 </p>
 <p align="center">
-    <a href="https://github.com/loadimpact/k6/releases">Download</a> ·
+    <a href="https://github.com/zeroryuki/k6/releases">Download</a> ·
     <a href="#install">Install</a> ·
     <a href="https://k6.io/docs">Documentation</a> ·
     <a href="https://community.k6.io/">Community</a>
@@ -51,7 +51,7 @@ Features
 - **Batteries included**: [Cookies](https://k6.io/docs/using-k6/cookies), [Crypto](https://k6.io/docs/javascript-api/k6-crypto), [Custom metrics](https://k6.io/docs/using-k6/metrics#custom-metrics), [Encodings](https://k6.io/docs/javascript-api/k6-encoding), [Environment variables](https://k6.io/docs/using-k6/environment-variables), JSON, [HTML forms](https://k6.io/docs/using-k6/html/working-with-html-forms), [files](https://k6.io/docs/javascript-api/init-context/open-filepath-mode), [flexible execution control](https://k6.io/docs/getting-started/running-k6#section-stages-ramping-updown-vus), and more.
 - **Built-in HAR converter**: record browser sessions as [`.har` files](https://en.wikipedia.org/wiki/.har) and [directly convert them to k6 scripts](https://k6.io/docs/using-k6/session-recording-har-support)
 - **Flexible metrics storage and visualization**: [InfluxDB](https://k6.io/docs/results-visualization/influxdb-+-grafana) (+Grafana), [JSON](https://k6.io/docs/getting-started/results-output/json) or [k6 Cloud](https://k6.io/docs/cloud/analyzing-results/overview)
-- [**Cloud execution**](https://k6.io/docs/using-k6/cloud-execution) and distributed tests _(currently only on infrastructure managed by [Load Impact](https://loadimpact.com/), with native distributed execution in k6 [planned](https://github.com/loadimpact/k6/wiki/Roadmap) for the near future!)_
+- [**Cloud execution**](https://k6.io/docs/using-k6/cloud-execution) and distributed tests _(currently only on infrastructure managed by [Load Impact](https://loadimpact.com/), with native distributed execution in k6 [planned](https://github.com/zeroryuki/k6/wiki/Roadmap) for the near future!)_
 
 There's even more! [See all features available in k6.](https://k6.io/docs/)
 
@@ -68,7 +68,7 @@ brew install k6
 
 ### Windows
 
-You can manually download and install the [official `.msi` installation package](https://dl.bintray.com/loadimpact/windows/k6-latest-amd64.msi) or, if you use the [chocolatey package manager](https://chocolatey.org/), follow [these instructions](https://bintray.com/repo/buildSettings?repoPath=%2Floadimpact%2Fchoco) to set up the k6 repository.
+You can manually download and install the [official `.msi` installation package](https://dl.bintray.com/zeroryuki/windows/k6-latest-amd64.msi) or, if you use the [chocolatey package manager](https://chocolatey.org/), follow [these instructions](https://bintray.com/repo/buildSettings?repoPath=%2Floadimpact%2Fchoco) to set up the k6 repository.
 
 ### Linux
 
@@ -76,7 +76,7 @@ For Debian-based Linux distributions, you can install k6 from the private deb re
 
 ```bash
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 379CE192D401AB61
-echo "deb https://dl.bintray.com/loadimpact/deb stable main" | sudo tee -a /etc/apt/sources.list
+echo "deb https://dl.bintray.com/zeroryuki/deb stable main" | sudo tee -a /etc/apt/sources.list
 sudo apt-get update
 sudo apt-get install k6
 ```
@@ -84,7 +84,7 @@ sudo apt-get install k6
 And for rpm-based ones like Fedora and CentOS:
 
 ```bash
-wget https://bintray.com/loadimpact/rpm/rpm -O bintray-loadimpact-rpm.repo
+wget https://bintray.com/zeroryuki/rpm/rpm -O bintray-loadimpact-rpm.repo
 sudo mv bintray-loadimpact-rpm.repo /etc/yum.repos.d/
 sudo dnf install k6   # use yum instead of dnf for older distros
 ```
@@ -97,14 +97,14 @@ docker pull loadimpact/k6
 
 ### Pre-built binaries & other platforms
 
-If there isn't an official package for your operating system or architecture, or if you don't want to install a custom repository, you can easily grab a pre-built binary from [the GitHub Releases page](https://github.com/loadimpact/k6/releases). Once you download and unpack the release, you can optionally copy the `k6` binary it contains somewhere in your `PATH`, so you are able to run k6 from any location on your system.
+If there isn't an official package for your operating system or architecture, or if you don't want to install a custom repository, you can easily grab a pre-built binary from [the GitHub Releases page](https://github.com/zeroryuki/k6/releases). Once you download and unpack the release, you can optionally copy the `k6` binary it contains somewhere in your `PATH`, so you are able to run k6 from any location on your system.
 
 ### Build from source
 
 k6 is written in Go, so it's just a single statically-linked executable and very easy to build and distribute. To build from source you need **[Git](https://git-scm.com/downloads)** and **[Go](https://golang.org/doc/install)** (1.12 or newer). Follow these instructions:
 
-- Run `go get github.com/loadimpact/k6` which will:
-  - git clone the repo and put the source in `$GOPATH/src/github.com/loadimpact/k6`
+- Run `go get github.com/zeroryuki/k6` which will:
+  - git clone the repo and put the source in `$GOPATH/src/github.com/zeroryuki/k6`
   - build a `k6` binary and put it in `$GOPATH/bin`
 - Make sure you have `$GOPATH/bin` in your `PATH` (or copy the `k6` binary somewhere in your `PATH`), so you are able to run k6 from any location.
 - Tada, you can now run k6 using `k6 run script.js`
@@ -126,9 +126,9 @@ export default function() {
 
 The script details and how we can extend and configure it will be explained below, but for now simply save the above snippet as a `script.js` file somewhere on your system. Assuming that you've [installed k6](#install) correctly, on Linux and Mac you can run the saved script by executing `k6 run script.js` from the same folder. For Windows the command is almost the same - `k6.exe run script.js`.
 
-If you decide to use the [k6 docker image](https://hub.docker.com/r/loadimpact/k6/), the command will be slightly different. Instead of passing the script filename to k6, a dash is used to instruct k6 to read the script contents directly via the standard input. This allows us to to avoid messing with docker volumes for such a simple single-file script, greatly simplifying the docker command: `docker run -i loadimpact/k6 run - <script.js`.
+If you decide to use the [k6 docker image](https://hub.docker.com/r/zeroryuki/k6/), the command will be slightly different. Instead of passing the script filename to k6, a dash is used to instruct k6 to read the script contents directly via the standard input. This allows us to to avoid messing with docker volumes for such a simple single-file script, greatly simplifying the docker command: `docker run -i loadimpact/k6 run - <script.js`.
 
-In some situations it may also be useful to execute remote scripts. You can do that with HTTP**S** URLs in k6 by [importing them](https://k6.io/docs/using-k6/modules#section-remote-modules) in the script via their URL or simply specifying their URL in the CLI command: `k6 run github.com/loadimpact/k6/samples/http_2.js` (k6 "knows" a bit about github and cdnjs URLs, so this command is actually shorthand for `k6 run raw.githubusercontent.com/loadimpact/k6/master/samples/http_2.js`)
+In some situations it may also be useful to execute remote scripts. You can do that with HTTP**S** URLs in k6 by [importing them](https://k6.io/docs/using-k6/modules#section-remote-modules) in the script via their URL or simply specifying their URL in the CLI command: `k6 run github.com/zeroryuki/k6/samples/http_2.js` (k6 "knows" a bit about github and cdnjs URLs, so this command is actually shorthand for `k6 run raw.githubusercontent.com/zeroryuki/k6/master/samples/http_2.js`)
 
 For more information on how to get started running k6, please look at the [Running k6](https://k6.io/docs/getting-started/running-k6) documentation page. If you want to know more about making and measuring HTTP requests with k6, take a look [here](https://k6.io/docs/using-k6/http-requests) and [here](https://k6.io/docs/javascript-api/k6-http). And for information about the commercial k6 services like distributed cloud execution (the `k6 cloud` command) or Cloud Results (`k6 run -o cloud`), you can visit [k6.io](https://k6.io/cloud) or view the [cloud documentation](https://k6.io/docs/cloud).
 
@@ -149,7 +149,7 @@ There are two reasons for this. The first is, of course: performance. If you rea
 
 But there's another, more interesting reason. By forcing all imports and file reads into the init context, we design for distributed execution. We know which files will be needed, so we distribute only those files to each node in the cluster. We know which modules will be imported, so we can bundle them up in an [archive](https://k6.io/docs/using-k6/archives-for-bundling-sharing-a-test) from the get-go. And, tying into the performance point above, the other nodes don't even need writable file systems - everything can be kept in-memory.
 
-This means that if your script works when it's executed with `k6 run` locally, it should also work without any modifications in a distributed execution environment like `k6 cloud` (that executes it in the commercial [k6 cloud infrastructure](https://k6.io/cloud)) or, in the future, with the [planned](https://github.com/loadimpact/k6/wiki/Roadmap) k6 native cluster execution mode.
+This means that if your script works when it's executed with `k6 run` locally, it should also work without any modifications in a distributed execution environment like `k6 cloud` (that executes it in the commercial [k6 cloud infrastructure](https://k6.io/cloud)) or, in the future, with the [planned](https://github.com/zeroryuki/k6/wiki/Roadmap) k6 native cluster execution mode.
 
 ### Script execution
 
@@ -173,7 +173,7 @@ By default, if nothing is specified, k6 runs a script with only 1 VU and for 1 i
 
 Let's say that you want to specify number of VUs in your script. In order of precedence, you can use any of the following configuration mechanisms to do it:
 1. Command-line flags: `k6 run --vus 10 script.js`, or via the short `-u` flag syntax if we want to save 3 keystrokes (`k6 run -u 10 script.js`).
-2. Environment variables: setting `K6_VUS=20` before you run the script with k6. Especially useful when using the [docker k6 image](https://hub.docker.com/r/loadimpact/k6/) and when running in containerized environments like Kubernetes.
+2. Environment variables: setting `K6_VUS=20` before you run the script with k6. Especially useful when using the [docker k6 image](https://hub.docker.com/r/zeroryuki/k6/) and when running in containerized environments like Kubernetes.
 3. Your script can `export` an `options` object that k6 reads and uses to set any options you want; for example, setting VUs would look like this:
     ```js
     export let options = {
@@ -191,7 +191,7 @@ Let's say that you want to specify number of VUs in your script. In order of pre
     ```
     Or any variation of the above, like importing different config files, etc. Also, having most of the script configuration right next to the script code makes k6 scripts very easily version-controllable.
 
-4. A global JSON config. By default k6 looks for it in the config home folder of the current user (OS-dependent, for Linux/BSDs k6 will look for `config.json` inside of `${HOME}/.config/loadimpact/k6`), though that can be modified with the `--config`/`-c` CLI flag.
+4. A global JSON config. By default k6 looks for it in the config home folder of the current user (OS-dependent, for Linux/BSDs k6 will look for `config.json` inside of `${HOME}/.config/zeroryuki/k6`), though that can be modified with the `--config`/`-c` CLI flag.
 It uses the same option keys as the exported `options` from the script file, so we can set the VUs by having `config.json` contain `{ "vus": 1 }`. Although it rarely makes sense to set the number of VUs there, the global config file is much more useful for storing things like login credentials for the different [outputs](#outputs), as used by the `k6 login` subcommand...
 
 Configuration mechanisms do have an order of precedence. As presented, options at the top of the list can override configuration mechanisms that are specified lower in the list. If we used all of the above examples for setting the number of VUs, we would end up with 10 VUs, since the CLI flags have the highest priority. Also please note that not all of the available options are configurable via all different mechanisms - some options may be impractical to specify via simple strings (so no CLI/environment variables), while other rarely-used ones may be intentionally excluded from the CLI flags to avoid clutter - refer to [options docs](https://k6.io/docs/using-k6/options) for more information.
@@ -249,7 +249,7 @@ A copy of whatever data `setup()` returns will be passed as the first argument t
 
 ### Metrics, tags and groups
 
-By default k6 measures and collects a lot of metrics about the things your scripts do - the duration of different script iterations, how much data was sent and received, how many HTTP requests were made, the duration of those HTTP requests, and even how long did the TLS handshake of a particular HTTPS request take. To see a summary of these built-in metrics in the output, you can run a simple k6 test, e.g. `k6 run github.com/loadimpact/k6/samples/http_get.js`. More information about the different built-in metrics collected by k6 (and how some of them can be accessed from inside of the scripts) is available in the docs [here](https://k6.io/docs/using-k6/metrics).
+By default k6 measures and collects a lot of metrics about the things your scripts do - the duration of different script iterations, how much data was sent and received, how many HTTP requests were made, the duration of those HTTP requests, and even how long did the TLS handshake of a particular HTTPS request take. To see a summary of these built-in metrics in the output, you can run a simple k6 test, e.g. `k6 run github.com/zeroryuki/k6/samples/http_get.js`. More information about the different built-in metrics collected by k6 (and how some of them can be accessed from inside of the scripts) is available in the docs [here](https://k6.io/docs/using-k6/metrics).
 
 k6 also allows the creation of user-defined `Counter`, `Gauge`, `Rate` and `Trend` metrics. They can be used to more precisely track and measure a custom subset of the things that k6 measures by default, or anything else the user wants, for example tracking non-timing information that is returned from the remote system. You can find more information about them [here](https://k6.io/docs/using-k6/metrics#custom-metrics) and a description of their APIs [here](https://k6.io/docs/javascript-api/k6-metrics).
 
@@ -331,7 +331,7 @@ export default function () {
 }
 ```
 
-You can save the above example as a local file and run it, or you can also run it directly from the [github copy of the file](https://github.com/loadimpact/k6/blob/master/samples/thresholds_readme_example.js) with the `k6 run github.com/loadimpact/k6/samples/thresholds_readme_example.js` command. You can find (and contribute!) more k6 script examples here: [https://github.com/loadimpact/k6/tree/master/samples](https://github.com/loadimpact/k6/tree/master/samples)
+You can save the above example as a local file and run it, or you can also run it directly from the [github copy of the file](https://github.com/zeroryuki/k6/blob/master/samples/thresholds_readme_example.js) with the `k6 run github.com/zeroryuki/k6/samples/thresholds_readme_example.js` command. You can find (and contribute!) more k6 script examples here: [https://github.com/zeroryuki/k6/tree/master/samples](https://github.com/zeroryuki/k6/tree/master/samples)
 
 ### Outputs
 
@@ -355,4 +355,4 @@ To get help about usage, report bugs, suggest features, and discuss k6 with othe
 Contributing
 ------------
 
-If you want to contribute or help with the development of k6, start by reading [CONTRIBUTING.md](https://github.com/loadimpact/k6/blob/master/CONTRIBUTING.md). Before you start coding, especially when it comes to big changes and features, it might be a good idea to first discuss your plans and implementation details with the k6 maintainers. You can do this either in the [github issue](https://github.com/loadimpact/k6/issues) for the problem you're solving (create one if it doesn't exist) or in the `#developers` channel on [Slack](https://k6.io/slack).
+If you want to contribute or help with the development of k6, start by reading [CONTRIBUTING.md](https://github.com/zeroryuki/k6/blob/master/CONTRIBUTING.md). Before you start coding, especially when it comes to big changes and features, it might be a good idea to first discuss your plans and implementation details with the k6 maintainers. You can do this either in the [github issue](https://github.com/zeroryuki/k6/issues) for the problem you're solving (create one if it doesn't exist) or in the `#developers` channel on [Slack](https://k6.io/slack).
